@@ -28,10 +28,10 @@ let pipeY = 0;
 let topPipeImg;
 let bottomPipeImg;
 
-// physics
+// physics - ИЗМЕНЕНО: ОЧЕНЬ МАЛЕНЬКАЯ ГРАВИТАЦИЯ
 let velocityX = -2;
 let velocityY = 0;
-let gravity = 0.1;
+let gravity = 0.15;  // <--- ИЗМЕНЕНО С 0.4 НА 0.15 (медленное падение)
 
 let gameOver = false;
 let score = 0;
@@ -108,7 +108,6 @@ function resetLeaders() {
     }
 }
 
-// Управление меню
 function showMainMenu() {
     document.getElementById("mainMenu").style.display = "flex";
     document.getElementById("leadersMenu").style.display = "none";
@@ -130,11 +129,10 @@ function startGame() {
     const canvas = document.getElementById("board");
     canvas.style.display = "block";
     
-    // КРИТИЧЕСКИЙ ФИКС: Полный сброс всех параметров
     gameOver = false;
     score = 0;
     bird.y = birdY;
-    velocityY = 0;  // <-- ГЛАВНЫЙ ФИКС: скорость падения обнуляется
+    velocityY = 0;
     pipeArray = [];
     
     if (gameLoop) {
@@ -144,7 +142,6 @@ function startGame() {
         clearInterval(pipeGenerator);
     }
     
-    // Запускаем игровые циклы
     pipeGenerator = setInterval(placePipes, 1500);
     gameLoop = requestAnimationFrame(update);
 }
@@ -182,11 +179,10 @@ function moveBird(e) {
 }
 
 function resetGame() {
-    // Полный сброс при рестарте
     gameOver = false;
     score = 0;
     bird.y = birdY;
-    velocityY = 0;  // <-- ГЛАВНЫЙ ФИКС: сброс скорости
+    velocityY = 0;
     pipeArray = [];
     
     if (pipeGenerator) {
@@ -232,7 +228,6 @@ function detectCollision(a, b) {
 function update() {
     if (!context) return;
     
-    // Продолжаем цикл
     gameLoop = requestAnimationFrame(update);
     
     if (gameOver) {
@@ -247,7 +242,7 @@ function update() {
     
     context.clearRect(0, 0, board.width, board.height);
     
-    // Bird physics
+    // Bird physics - ЗДЕСЬ ПРИМЕНЯЕТСЯ ГРАВИТАЦИЯ
     velocityY += gravity;
     bird.y += velocityY;
     
@@ -258,7 +253,6 @@ function update() {
     
     context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
     
-    // Проверка столкновения с землей
     if (bird.y + bird.height > board.height) {
         gameOver = true;
         const finalScore = Math.floor(score);
@@ -267,7 +261,6 @@ function update() {
         return;
     }
     
-    // Pipes
     for (let i = 0; i < pipeArray.length; i++) {
         let pipe = pipeArray[i];
         pipe.x += velocityX;
@@ -287,12 +280,10 @@ function update() {
         }
     }
     
-    // Удаление труб за экраном
     while (pipeArray.length > 0 && pipeArray[0].x < -pipeWidth) {
         pipeArray.shift();
     }
     
-    // Score
     context.fillStyle = "white";
     context.font = "bold 32px 'Courier New'";
     context.fillText(Math.floor(score), 15, 55);
@@ -301,7 +292,6 @@ function update() {
     context.fillText("SCORE", 15, 30);
 }
 
-// Обработчик клика по канвасу
 function handleCanvasClick(e) {
     if (!gameOver) {
         velocityY = -6;
