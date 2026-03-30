@@ -1,13 +1,45 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport", content="width=device-width, initial-scale=1.0">
-        <title>Flappy Bird</title>
-        <link rel="stylesheet" href="flappybird.css">
-        <script src="flappybird.js"></script>
-    </head>
-    <body>
-        <canvas id="board"></canvas>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Flappy Bird — Меню и Лидеры</title>
+    <link rel="stylesheet" href="flappybird.css">
+</head>
+<body>
+    <!-- Главное меню -->
+    <div id="mainMenu" class="menu-overlay">
+        <div class="menu-container">
+            <h1 class="game-title">🐦 FLAPPY BIRD</h1>
+            <div class="menu-buttons">
+                <button class="menu-btn play-btn" onclick="startGame()">▶ ИГРАТЬ</button>
+                <button class="menu-btn leaders-btn" onclick="showLeaders()">🏆 ТАБЛИЦА ЛИДЕРОВ</button>
+            </div>
+            <div class="controls-info">
+                <p>🎮 Управление: ПРОБЕЛ / ↑ / X</p>
+                <p>💡 Пролетайте между трубами и набирайте очки!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Таблица лидеров (скрыта по умолчанию) -->
+    <div id="leadersMenu" class="menu-overlay" style="display: none;">
+        <div class="menu-container">
+            <h1 class="game-title">🏆 ТАБЛИЦА ЛИДЕРОВ</h1>
+            <div id="leadersList" class="leaders-list">
+                <!-- Список лидеров будет здесь -->
+                <div class="leader-item">🥇 999 очков — ЧЕМПИОН</div>
+            </div>
+            <div class="menu-buttons">
+                <button class="menu-btn back-btn" onclick="hideLeaders()">◀ НАЗАД</button>
+                <button class="menu-btn reset-btn" onclick="resetLeaders()">🗑 СБРОСИТЬ РЕКОРДЫ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Игровое поле -->
+    <canvas id="board"></canvas>
+
+    <script src="flappybird.js"></script>
+</body>
 </html>
