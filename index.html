@@ -16,20 +16,17 @@
                 <button class="menu-btn leaders-btn" onclick="showLeaders()">🏆 ТАБЛИЦА ЛИДЕРОВ</button>
             </div>
             <div class="controls-info">
-                <p>🎮 Управление: ПРОБЕЛ / ↑ / X</p>
+                <p>🎮 Управление: ПРОБЕЛ / ↑ / X / ЛКМ</p>
                 <p>💡 Пролетайте между трубами и набирайте очки!</p>
             </div>
         </div>
     </div>
 
-    <!-- Таблица лидеров (скрыта по умолчанию) -->
+    <!-- Таблица лидеров -->
     <div id="leadersMenu" class="menu-overlay" style="display: none;">
         <div class="menu-container">
             <h1 class="game-title">🏆 ТАБЛИЦА ЛИДЕРОВ</h1>
-            <div id="leadersList" class="leaders-list">
-                <!-- Список лидеров будет здесь -->
-                <div class="leader-item">🥇 999 очков — ЧЕМПИОН</div>
-            </div>
+            <div id="leadersList" class="leaders-list"></div>
             <div class="menu-buttons">
                 <button class="menu-btn back-btn" onclick="hideLeaders()">◀ НАЗАД</button>
                 <button class="menu-btn reset-btn" onclick="resetLeaders()">🗑 СБРОСИТЬ РЕКОРДЫ</button>
