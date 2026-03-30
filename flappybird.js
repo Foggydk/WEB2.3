@@ -28,10 +28,10 @@ let pipeY = 0;
 let topPipeImg;
 let bottomPipeImg;
 
-// physics - ИЗМЕНЕНО: ОЧЕНЬ МАЛЕНЬКАЯ ГРАВИТАЦИЯ
+// physics - УМЕНЬШЕННАЯ ГРАВИТАЦИЯ
 let velocityX = -2;
 let velocityY = 0;
-let gravity = 0.15;  // <--- ИЗМЕНЕНО С 0.4 НА 0.15 (медленное падение)
+let gravity = 0.1;  // <-- ОЧЕНЬ МАЛЕНЬКАЯ (было 0.4)
 
 let gameOver = false;
 let score = 0;
@@ -228,6 +228,9 @@ function detectCollision(a, b) {
 function update() {
     if (!context) return;
     
+    // ОТЛАДКА: выводим текущую гравитацию и скорость
+    console.log("Текущая gravity =", gravity, "velocityY =", velocityY);
+    
     gameLoop = requestAnimationFrame(update);
     
     if (gameOver) {
@@ -242,7 +245,7 @@ function update() {
     
     context.clearRect(0, 0, board.width, board.height);
     
-    // Bird physics - ЗДЕСЬ ПРИМЕНЯЕТСЯ ГРАВИТАЦИЯ
+    // Bird physics
     velocityY += gravity;
     bird.y += velocityY;
     
