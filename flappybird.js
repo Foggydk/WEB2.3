@@ -130,11 +130,11 @@ function startGame() {
     const canvas = document.getElementById("board");
     canvas.style.display = "block";
     
-    // Полный сброс игры
+    // КРИТИЧЕСКИЙ ФИКС: Полный сброс всех параметров
     gameOver = false;
     score = 0;
     bird.y = birdY;
-    velocityY = 0;
+    velocityY = 0;  // <-- ГЛАВНЫЙ ФИКС: скорость падения обнуляется
     pipeArray = [];
     
     if (gameLoop) {
@@ -182,10 +182,11 @@ function moveBird(e) {
 }
 
 function resetGame() {
+    // Полный сброс при рестарте
     gameOver = false;
     score = 0;
     bird.y = birdY;
-    velocityY = 0;
+    velocityY = 0;  // <-- ГЛАВНЫЙ ФИКС: сброс скорости
     pipeArray = [];
     
     if (pipeGenerator) {
@@ -231,10 +232,11 @@ function detectCollision(a, b) {
 function update() {
     if (!context) return;
     
-    requestAnimationFrame(update);
+    // Продолжаем цикл
+    gameLoop = requestAnimationFrame(update);
     
     if (gameOver) {
-        context.fillStyle = "black";
+        context.fillStyle = "white";
         context.font = "bold 30px 'Courier New'";
         context.fillText("GAME OVER", boardWidth / 2 - 90, boardHeight / 2 - 40);
         context.font = "16px monospace";
@@ -251,10 +253,12 @@ function update() {
     
     if (bird.y < 0) {
         bird.y = 0;
+        velocityY = 0;
     }
     
     context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
     
+    // Проверка столкновения с землей
     if (bird.y + bird.height > board.height) {
         gameOver = true;
         const finalScore = Math.floor(score);
@@ -283,6 +287,7 @@ function update() {
         }
     }
     
+    // Удаление труб за экраном
     while (pipeArray.length > 0 && pipeArray[0].x < -pipeWidth) {
         pipeArray.shift();
     }
@@ -294,6 +299,16 @@ function update() {
     context.font = "18px monospace";
     context.fillStyle = "#ffe0a3";
     context.fillText("SCORE", 15, 30);
+}
+
+// Обработчик клика по канвасу
+function handleCanvasClick(e) {
+    if (!gameOver) {
+        velocityY = -6;
+    } else {
+        resetGame();
+    }
+    e.preventDefault();
 }
 
 window.onload = function() {
@@ -311,7 +326,6 @@ window.onload = function() {
     bottomPipeImg = new Image();
     bottomPipeImg.src = "./bottompipe.png";
     
-    // Ждем загрузки изображений
     let imagesLoaded = 0;
     function imageLoaded() {
         imagesLoaded++;
@@ -325,13 +339,5 @@ window.onload = function() {
     bottomPipeImg.onload = imageLoaded;
     
     document.addEventListener("keydown", moveBird);
-    
-    board.addEventListener("click", function(e) {
-        if (!gameOver) {
-            velocityY = -6;
-        } else {
-            resetGame();
-        }
-        e.preventDefault();
-    });
+    board.addEventListener("click", handleCanvasClick);
 };
